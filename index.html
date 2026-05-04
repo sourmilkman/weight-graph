@@ -1,360 +1,349 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weight Tracker UK</title>
+    <title>Weight Tracker Pro</title>
     <style>
-        /* THEME VARIABLES - Zinc/Dark UK Edition */
         :root {
-            --bg: #09090b;
-            --card: #18181b;
-            --card-border: #27272a;
-            --text-main: #fafafa;
-            --text-muted: #a1a1aa;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --danger: #ef4444;
+            --bg-color: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --accent-color: #3498db;
+            --text-main: #ffffff;
+            --text-dim: #888888;
+            --border-color: #333333;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; }
-
         body {
-            background-color: var(--bg);
+            background-color: var(--bg-color);
             color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
             display: flex;
             justify-content: center;
-            padding: 20px;
+            align-items: center;
             min-height: 100vh;
         }
 
-        .app-container {
+        .container {
             width: 100%;
-            max-width: 450px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            max-width: 400px;
+            padding: 20px;
         }
-
-        header {
-            padding: 20px 0;
-            text-align: center;
-        }
-        header h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -1px; }
-        header p { color: var(--text-muted); font-size: 0.9rem; }
 
         .card {
-            background: var(--card);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
+            background: var(--card-bg);
+            border-radius: 24px;
             padding: 24px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border: 1px solid var(--border-color);
         }
 
-        .stat-group {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+        h1 {
+            font-size: 24px;
+            margin: 0 0 20px 0;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
-        .stat-label { color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
-        .stat-value { font-size: 1.8rem; font-weight: 700; }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
 
         /* Progress Bar */
         .progress-container {
+            margin-bottom: 25px;
+        }
+
+        .progress-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: var(--text-dim);
+        }
+
+        .progress-bar-bg {
             width: 100%;
-            height: 8px;
-            background: var(--card-border);
-            border-radius: 4px;
+            height: 10px;
+            background: #333;
+            border-radius: 5px;
             overflow: hidden;
-            margin-top: 10px;
         }
-        .progress-bar {
+
+        .progress-bar-fill {
             height: 100%;
-            background: var(--accent);
+            background: var(--accent-color);
             width: 0%;
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.5s ease-out;
+            box-shadow: 0 0 10px var(--accent-color);
         }
 
-        /* Buttons */
-        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
-        button {
-            flex: 1;
-            padding: 12px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
+        /* History List */
+        .history-title {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+            display: block;
         }
-        .btn-primary { background: var(--accent); color: white; }
-        .btn-primary:hover { background: var(--accent-hover); }
-        .btn-outline { background: transparent; border: 1px solid var(--card-border); color: var(--text-main); }
-        .btn-outline:hover { background: var(--card-border); }
 
-        /* History */
-        .history-list { list-style: none; margin-top: 10px; }
+        .history-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
         .history-item {
             display: flex;
             justify-content: space-between;
             padding: 12px 0;
-            border-bottom: 1px solid var(--card-border);
-            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
         }
-        .history-item:last-child { border: none; }
-        .history-date { color: var(--text-muted); }
 
-        /* Modals */
-        .overlay {
+        .history-item:last-child { border: none; }
+
+        .history-date { color: var(--text-dim); }
+
+        /* Buttons/Inputs */
+        .actions {
+            margin-top: 25px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-primary { background: var(--accent-color); color: white; }
+        .btn-secondary { background: #333; color: white; }
+        button:active { opacity: 0.7; }
+
+        /* Modal */
+        .modal-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 100;
         }
+
         .modal {
-            background: #1a1a1a;
-            padding: 2rem;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 350px;
-            border: 1px solid #333;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 300px;
+            border: 1px solid var(--border-color);
         }
-        .modal h2 { margin-top: 0; font-size: 1.25rem; }
+
         .modal input {
             width: 100%;
             padding: 12px;
             margin: 15px 0;
             background: #000;
-            border: 1px solid #333;
+            border: 1px solid var(--border-color);
             color: white;
             border-radius: 8px;
             box-sizing: border-box;
         }
-        .modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
-        .btn-save { background: #fff; color: #000; padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; }
-        .btn-cancel { background: transparent; color: #888; padding: 8px 16px; border: none; cursor: pointer; }
 
-        .instruction { font-size: 0.8rem; color: #888; margin-bottom: 10px; display: block; }
+        .modal-btns {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="container">
-            <div class="container">
-                <!-- Main App UI -->
-                <div style="padding: 20px; max-width: 500px; margin: 0 auto;">
-                    <div class="container">
-                        <div class="container">
-                            <div class="container">
-                                <div style="text-align: center; margin-bottom: 20px;">
-                                    <h1 style="margin: 0; color: white;">Weight Tracker</h1>
-                                    <p style="color: #666; margin: 5px 0;">Stay on top of your goals</p>
-                                </div>
+<div class="container">
+    <div class="card">
+        <h1>Weight Tracker</h1>
 
-                                <!-- Stats Card -->
-                                <div style="background: #1a1a1a; padding: 20px; border-radius: 16px; border: 1px solid #333; margin-bottom: 20px;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div>
-                                            <span style="color: #888; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Current Weight</span>
-                                            <div id="currentWeightDisplay" style="font-size: 2rem; font-weight: bold; color: white;">--</div>
-                                        </div>
-                                        <div style="text-align: right;">
-                                            <span style="color: #888; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Goal Weight</span>
-                                            <div id="goalWeightDisplay" style="font-size: 1.2rem; color: #aaa;">Not set</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Progress Bar -->
-                                    <div style="margin-top: 20px;">
-                                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #666; margin-bottom: 5px;">
-                                            <span>Progress</span>
-                                            <span id="progressPercent">0%</span>
-                                        </div>
-                                        <div style="width: 100%; height: 8px; background: #333; border-radius: 4px; overflow: hidden;">
-                                            <div id="progressBar" style="width: 0%; height: 100%; background: #fff; transition: width 0.5s ease;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Actions -->
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
-                                    <button onclick="openModal('weightModal')" style="padding: 12px; border-radius: 10px; border: none; background: #fff; font-weight: bold; cursor: pointer;">Log Weight</button>
-                                    <button onclick="openModal('goalModal')" style="padding: 12px; border-radius: 10px; border: 1px solid #333; background: transparent; color: white; font-weight: bold; cursor: pointer;">Set Goal</button>
-                                </div>
-
-                                <!-- History -->
-                                <div style="background: #1a1a1a; padding: 20px; border-radius: 16px; border: 1px solid #333;">
-                                    <h3 style="margin: 0 0 15px 0; color: white; font-size: 1rem;">Recent Logs</h3>
-                                    <div id="historyList" style="max-height: 200px; overflow-y: auto; color: #aaa; font-size: 0.9rem;">
-                                        <!-- Logs will appear here -->
-                                        <p style="text-align: center; color: #444;">No entries yet</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-label">Current</span>
+                <div class="stat-value" id="display-current">--</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Goal</span>
+                <div class="stat-value" id="display-goal">--</div>
             </div>
         </div>
-    </div>
 
-    <!-- Weight Entry Modal -->
-    <div id="weightModal" class="overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); align-items:center; justify-content:center; z-index:1000;">
-        <div class="modal">
-            <h2>Log Weight</h2>
-            <span class="instruction">Enter weight in lbs (e.g. 185.5)</span>
-            <input type="number" id="weightInput" step="0.1" placeholder="0.0">
-            <div class="modal-btns">
-                <button class="btn-cancel" onclick="closeModal('weightModal')">Cancel</button>
-                <button class="btn-save" onclick="saveWeight()">Save</button>
+        <div class="progress-container">
+            <div class="progress-label-row">
+                <span>Progress</span>
+                <span id="progress-percent">0%</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progress-bar"></div>
             </div>
         </div>
-    </div>
 
-    <!-- Goal Setting Modal -->
-    <div id="goalModal" class="overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); align-items:center; justify-content:center; z-index:1000;">
-        <div class="modal">
-            <h2>Set Goal Weight</h2>
-            <span class="instruction">Enter your target weight in lbs</span>
-            <input type="number" id="goalInput" step="0.1" placeholder="0.0">
-            <div class="modal-btns">
-                <button class="btn-cancel" onclick="closeModal('goalModal')">Cancel</button>
-                <button class="btn-save" onclick="saveGoal()">Set Goal</button>
-            </div>
+        <span class="history-title">Recent Entries</span>
+        <div class="history-list" id="history-list">
+            <!-- Items injected here -->
+        </div>
+
+        <div class="actions">
+            <button class="btn-secondary" onclick="openModal('goal')">Set Goal</button>
+            <button class="btn-primary" onclick="openModal('weight')">Add Weight</button>
         </div>
     </div>
+</div>
 
-    <script>
-        // State management
-        let appData = {
-            currentWeight: null,
-            goalWeight: null,
-            history: []
-        };
+<!-- Modal for Input -->
+<div class="modal-overlay" id="modal-overlay">
+    <div classm class="modal">
+        <h2 id="modal-title" style="margin-top:0">Enter Value</h2>
+        <p id="modal-desc" style="font-size: 12px; color: #888;">Enter weight in lbs</p>
+        <input type="number" id="modal-input" placeholder="e.g. 150">
+        <div class="modal-btns">
+            <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+            <button class="btn-primary" onclick="saveData()">Save</button>
+        </div>
+    </div>
+</div>
 
-        // Load data from LocalStorage
-        function init() {
-            const saved = localStorage.getItem('weightTrackerData');
-            if (saved) {
-                appData = JSON.parse(saved);
-            }
-            updateUI();
+<script>
+    let state = {
+        goalLbs: 140,
+        history: [160, 155, 152] // Array of weights in lbs
+    };
+
+    // Load from LocalStorage
+    const saved = localStorage.getItem('weightTrackerData');
+    if (saved) state = JSON.parse(saved);
+
+    let currentMode = '';
+
+    function formatStones(lbs) {
+        if (!lbs) return "--";
+        const totalStones = Math.floor(lbs / 14);
+        const remainingLbs = Math.round(lbs % 14);
+        if (totalStones === 0) return remainingLbs + "lb";
+        return `${totalStones}st ${remainingLbs}lb`;
+    }
+
+    function updateUI() {
+        const currentWeight = state.history.length > 0 ? state.history[0] : 0;
+        
+        document.getElementById('display-current').innerText = formatStstones(currentWeight);
+        document.getElementById('display-goal').innerText = formatStones(state.goalLbs);
+
+        // Progress Calculation
+        // Logic: Progress is how much of the "gap" between current and goal we've closed.
+        // If current is 160 and goal is 140, progress starts at 0.
+        // As current drops towards 140, progress increases.
+        let progress = 0;
+        if (currentWeight > state.goalLons) {
+            const startWeight = state.history[state.history.length-1] || state.goalLbs; 
+            // Simplified: progress = (Start - Current) / (Start - Goal)
+            // But for a simple app, let's just track progress towards goal relative to a starting point
+            // or simply: if current <= goal, progress = 100%.
+            // Let's use: Progress = 100% if current <= goal, else 0%.
+            // Actually, let's use: How much of the "excess" weight is gone.
+            // Let's assume a "starting" point is the first item in history.
+            const startWeightVal = state.history.length > 1 ? state.history[state.history.length-1] : currentWeight;
+            const totalToLose = startWeightVal - state.goalLbs;
+            const lostSoFar = startWeightVal - currentWeight;
+            progress = totalToLose > 0 ? (lostSoFar / totalToLose) * 100 : 100;
+        } else {
+            progress = 100;
         }
 
-        function saveData() {
-            localStorage.setItem('weightTrackerData', JSON.stringify(appData));
-            updateUI();
+        const cappedProgress = Math.min(100, Math.max(0, progress));
+        document.getElementById('progress-bar').style.width = cappedProgress + '%';
+        document.getElementById('progress-percent').innerText = Math.round(cappedProgress) + '%';
+
+        // Update History
+        const list = document.getElementById('history-list');
+        list.innerHTML = '';
+        state.history.forEach((w, index) => {
+            const date = new Date();
+            date.setDate(date.getDate() - index);
+            const div = document.createElement('div');
+            div.className = 'history-item';
+            div.innerHTML = `
+                <span class="history-date">${date.toLocaleDateString(undefined, {month:'short', day:'numeric'})}</span>
+                <span class="history-weight">${formatStones(w)}</span>
+            `;
+            list.appendChild(div);
+        });
+
+        localStorage.setItem('weightTrackerData', JSON.stringify(state));
+    }
+
+    // Helper to fix the typo in my logic above
+    function formatStstones(lbs) { return formatStones(lbs); }
+
+    function openModal(mode) {
+        currentMode = mode;
+        document.getElementById('modal-overlay').style.display = 'flex';
+        document.getElementById('modal-title').innerText = mode === 'goal' ? 'Set Goal' : 'Add Weight';
+        document.getElementById('modal-input').value = '';
+        document.getElementById('modal-input').focus();
+    }
+
+    function closeModal() {
+        document.getElementById('modal-overlay').style.display = 'none';
+    }
+
+    function saveData() {
+        const val = parseFloat(document.getElementById('modal-input').value);
+        if (isNaN(val)) return;
+
+        if (currentMode === 'goal') {
+            state.goalLbs = val;
+        } else {
+            state.history.unshift(val);
+            if (state.history.length > 10) state.history.pop();
         }
 
-        function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
-        }
+        updateUI();
+        closeModal();
+    }
 
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
-        }
+    // Init
+    updateUI();
+</script>
 
-        function saveWeight() {
-            const val = parseFloat(document.getElementById('weightInput').value);
-            if (val > 0) {
-                const entry = {
-                    weight: val,
-                    date: new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
-                };
-                appData.currentWeight = val;
-                appData.history.unshift(entry);
-                // Keep only last 10 entries
-                if (appData.history.length > 10) appData.history.pop();
-                
-                saveData();
-                closeModal('weightModal');
-                document.getElementById('weightInput').value = '';
-            }
-        }
-
-        function saveGoal() {
-            const val = parseFloat(document.getElementById('goalInput').value);
-            if (val > 0) {
-                appData.goalWeight = val;
-                saveData();
-                closeModal('goalModal');
-                document.getElementById('。goalInput').value = '';
-            }
-        }
-
-        function formatWeight(val) {
-            if (!val) return '--';
-            return val.toFixed(1) + ' lbs';
-        }
-
-        function updateUI() {
-            // Update displays
-            document.getElementById('currentWeightDisplay').innerText = formatWeight(appData.currentWeight);
-            document.getElementById('goalWeightDisplay').innerText = appData.goalWeight ? formatWeight(appData.goalWeight) : 'Not set';
-            
-            // Update Progress
-            const progressPercent = document.getElementById('progressPercent');
-            const progressBar = document.getElementById('progressBar');
-            
-            if (appData.currentWeight && appData.goalWeight) {
-                let progress = 0;
-                const start = Math.min(appData.currentWeight, appData.goalWeight);
-                const end = Math.max(appData.currentWeight, appData.goalWeight);
-                
-                // We calculate progress based on how close we are to the goal
-                // If weight is decreasing (losing weight), progress = (start - current) / (start - goal)
-                // For simplicity, let's use the distance from start to goal
-                const totalDistance = Math.abs(appData.currentWeight - appData.goalWeight); // This is not quite right for a progress bar
-                
-                // Better logic: progress is % of distance covered from "initial" to "goal"
-                // Since we don't have "initial", let's assume progress is relative to the change.
-                // Let's just show how close current is to goal vs a fixed range.
-                // Actually, let's just show % reduction from current to goal
-                const diff = Math.abs(appData.currentWeight - appData.goalWeight);
-                // For a simple UI, let's assume progress is how much of the "loss" is achieved.
-                // Since we don't have the starting weight, let's just show 0 if no start weight exists.
-                // Or simpler: If current > goal, progress is (current-goal) / (some reference)
-                // Let's stick to: 0% if current >= goal (for weight loss), 100% if current <= goal.
-                // Let's just use a placeholder logic: 
-                // If goal < current (loss): progress is how much of the 'excess' is gone.
-                // We'll just show a simple 0-100 based on the weight difference.
-                
-                // Let's skip complex math and just show progress as "how close are we to the goal"
-                // If we don't know the start, we can't calculate % progress. 
-                // Let's just show a static bar for now or simple 50% if we are at the weight.
-                // Actually, let's just show 100% if current == goal, otherwise 0.
-                // Let's use a dummy "start" based on the first item in history.
-                if (appData.history.length > 0) {
-                    const startWeight = appData.history[appData.history.length - 1].weight;
-                    const totalGap = Math.abs(startWeight - appData.goalWeight);
-                    const currentGap = Math.abs(appData.currentWeight - appData.goalWeight);
-                    const p = Math.max(0, Math.min(100, 100 - (currentGap/totalGap * 100)));
-                    progressPercent.innerText = Math.round(p) + '%';
-                    progressBar.style.width = p + '%';
-                }
-            } else {
-                progressPercent.innerText = '0%';
-                progressBar.style.width = '0%';
-            }
-
-            // Update History
-            const historyList = document.getElementById('historyList');
-            if (appData.history.length === 0) {
-                historyList.innerHTML = '<p style="text-align: center; color: #444;">No entries yet</p>';
-            } else {
-                historyList.innerHTML = appData.history.map(item => `
-                    <div style="display:flex; justify-content:space-between; padding: 8px 0; border-bottom: 1px solid #222;">
-                        <span style="color: white;">${formatWeight(item.weight)}</span>
-                        <span style="color: #666;">${item.date}</span>
-                    </div>
-                `).join('');
-            }
-        }
-
-        init();
-    </script>
 </body>
+</html>
