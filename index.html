@@ -5,62 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weight Tracker</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#09090b">
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <div class="header">
+        <div class="header-actions">
+            <!-- New Button for setting Goal -->
+            <button id="set-goal-btn" class="icon-btn" title="Set Goal">🎯</button>
+            <button id="add-weight-btn" class="icon-btn" title="Add Weight">➕</button>
+        </div>
+        <div class="header-title">Weight Tracker</div>
+    </div>
 
-    <header>
-        <h1>TrackWeight</h1>
-        <button id="clear-btn" title="Clear All Data">🗑️</button>
-    </header>
-
-    <main>
-        <section class="stats-grid">
-            <div class="stat-card">
-                <p>Current</p>
-                <h2 id="current-weight">--</h2>
+    <div class="main-container">
+        <div class="stats-card">
+            <div class="stat-item">
+                <span class="stat-label">Current</span>
+                <span id="current-weight-display" class="stat-value">--</span>
             </div>
-            <div class="stat-card">
-                <p>Goal</p>
-                <h2 id="goal-weight" class="text-emerald">--</h2>
+            <div class="stat-item">
+                <span class="stat-label">Goal</span>
+                <span id="goal-weight-display" class="stat-value">--</span>
             </div>
-        </section>
+        </div>
 
-        <section class="chart-container">
+        <div class="chart-container">
             <canvas id="weightChart"></canvas>
-        </section>
+        </div>
 
-        <section class="history-section">
-            <h3 class="section-title">Recent Entries</h3>
-            <div id="history-list">
-                <!-- Entries will be injected here -->
-            </div>
-        </section>
-    </main>
+        <div class="history-section">
+            <h3>History</h3>
+            <ul id="history-list"></ul>
+        </div>
+    </div>
 
-    <button id="fab" class="fab">+</button>
-
-    <!-- Modal -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <h3>Add Weight</h3>
-            <input type="number" id="weight-input" step="0.1" placeholder="0.0" autofocus>
+    <!-- Modal for Input -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal">
+            <h2 id="modal-title">Add Weight</h2>
+            <p id="modal-desc">Enter your current weight.</p>
+            <input type="number" id="modal-input" step="0.1" placeholder="0.0">
             <div class="modal-actions">
-                <button id="cancel-btn" class="btn-secondary">Cancel</button>
-                <button id="save-btn" class="btn-primary">Save</button>
+                <button id="modal-cancel" class="btn-secondary">Cancel</button>
+                <button id="modal-save" class="btn-primary">Save</button>
             </div>
         </div>
     </div>
 
-    <script src="app.js"></script>
-    <script>
-        // Register Service Worker for PWA
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
