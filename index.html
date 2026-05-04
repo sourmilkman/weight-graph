@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weight Tracker</title>
+    <title>Weight Tracker Pro</title>
     <style>
         :root {
             --bg: #121212;
-            --card: #1e1e1s;
-            --accent: #3498db;
-            --text: #ffffff;
-            --text-dim: #a0a0a0;
-            --border: #333;
+            --card: #1e1e1e;
+            --primary: #00adb5;
+            --text: #eeeeee;
+            --text-dim: #b0b0b0;
+            --accent: #ff2e63;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg);
             color: var(--text);
             display: flex;
@@ -26,157 +26,115 @@
 
         .container {
             width: 100%;
-            max-width: 400px;
-            background: #1e1e1e;
+            max-width: 450px;
+            background: var(--card);
+            padding: 25px;
             border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid var(--border);
+            box_shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        h1 { text-align: center; font-size: 1.5rem; margin-bottom: 25px; }
+        h1 { text-align: center; color: var(--primary); margin-bottom: 30px; }
 
+        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         .stat-card {
-            background: #2a2a2a;
+            background: rgba(255,255,255,0.05);
             padding: 15px;
             border-radius: 15px;
             text-align: center;
-            border: 1px solid #333;
         }
 
         .stat-label {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--text-dim);
             text-transform: uppercase;
-            margin-bottom: 5px;
             display: block;
+            margin-bottom: 5px;
         }
 
         .stat-value {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: bold;
+            color: var(--primary);
         }
 
-        /* Progress Bar */
-        .progress-container {
+        /* Input Section */
+        .input-group {
             margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
         }
 
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            margin-bottom: 8px;
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
             color: var(--text-dim);
         }
 
-        .progress-bar-bg {
+        input {
             width: 100%;
-            height: 12px;
-            background: #333;
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: var/(--accent);
-            background: linear-gradient(90deg, #3498db, #2ecc71);
-            width: 0%;
-            transition: width 0.5s ease-out;
-        }
-
-        /* History List */
-        .history-section {
-            margin-top: 20px;
-        }
-
-        .history-title {
-            font-size: 1rem;
+            padding: 12px;
+            box-sizing: border-box;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: white;
+            font-size: 1.1rem;
             margin-bottom: 15px;
-            color: var var(--text-dim);
         }
 
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #333;
-        }
-
-        .history-date {
-            font-size: 0.85rem;
-            color: var(--text-dim);
-        }
-
-        .history-weight {
-            font-weight: bold;
-        }
-
-        /* Buttons & Modals */
-        .actions {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+        input:focus {
+            outline: none;
+            border-string: var(--primary);
+            border-color: var(--primary);
         }
 
         button {
-            flex: 1;
+            width: 100%;
             padding: 12px;
-            border-radius: 10px;
             border: none;
+            border-radius: 8px;
+            background: var(--primary);
+            color: white;
             font-weight: bold;
             cursor: pointer;
             transition: opacity 0.2s;
         }
 
-        .btn-primary { background: #3498db; color: white; }
-        .btn-secondary { background: #444; color: white; }
-        button:active { opacity: 0.7; }
+        button:active { opacity: 0.8; }
 
-        /* Simple Modal */
-        #modalOverlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-        }
-
-        .modal {
-            background: #222;
-            padding: 25px;
-            border-radius: 20px;
-            width: 80%;
-            max-width: 300px;
-            border: 1px solid #444;
-        }
-
-        .modal input {
-            width: 100%;
-            padding: 12px;
-            margin: 15px 0;
-            box-sizing: border-box;
-            background: #333;
-            border: 1px solid #555;
-            color: white;
-            border-radius: 8px;
+        /* History List */
+        .history-title {
             font-size: 1.1rem;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
         }
 
-        .modal-btns {
+        .log-item {
             display: flex;
-            gap: 10px;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #2a2a2a;
+            font-size: 0.95rem;
+        }
+
+        .log-date { color: var(--text-dim); }
+        .log-weight { font-weight: bold; }
+
+        .empty-msg {
+            text-align: center;
+            color: var(--text-dim);
+            font-style: italic;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -185,212 +143,148 @@
 <div class="container">
     <h1>Weight Tracker</h1>
 
+    <!-- Top Stats -->
     <div class="stats-grid">
         <div class="stat-card">
             <span class="stat-label">Current</span>
-            <div id="currWeightDisplay" class="stat-value">--</div>
+            <span id="displayCurrent" class="stat-value">--</span>
         </div>
-        <div class="stat-scale">
-            <div class="stat-card">
-                <span class="stat-label">Goal</span>
-                <div id="goalWeightDisplay" class="stat-value">--</div>
-            </div>
+        <div class="stat-card">
+            <span class="stat-label">Goal</span>
+            <span id="displayGoal" class="stat-value">--</span>
         </div>
     </div>
 
-    <div class="progress-container">
-        <div class="progress-header">
-            <span>Progress to Goal</span>
-            <span id="progressPercent">0%</span>
-        </div>
-        <div class="progress-bar-bg">
-            <div id="progressBar" class="progress-bar-fill"></div>
-        </div>
+    <!-- Form -->
+    <div classmode="input-group">
+        <label for="weightInput">Add Weight (e.g., 12.10 for 12st 10lb)</label>
+        <input type="number" id="weightInput" step="0.01" placeholder="0.00">
+        
+        <label for="goalInput">Set Goal Weight (e.g., 10.00)</label>
+        <input type="number" id="goalInput" step="0.01" placeholder="Target Weight">
+        
+        <button onclick="handleUpdate()">Update Tracker</button>
     </div>
 
-    <div class="actions">
-        <button class="btn-primary" onclick="openModal('weight')">Add Weight</button>
-        <button class="btn-secondary" onclick="openModal('goal')">Set Goal</button>
-    </div>
-
-    <div class="history-section">
-        <div class="history-title">Recent Entries</div>
-        <div id="historyList">
-            <!-- Entries go here -->
-        </div>
-    </div>
-</div>
-
-<!-- Modal -->
-<div id="modalOverlay">
-    <div class="modal">
-        <h3 id="modalTitle" style="margin:0">Enter Weight</h3>
-        <p id="modalSub" style="font-size: 0.8rem; color: #888;">Format: "12st 5" or "173"</p>
-        <input type="text" id="modalInput" placeholder="e.g. 12st 5">
-        <div class="modal-btns">
-            <button class="btn-secondary" onclick="closeModal()">Cancel</button>
-            <button class="btn-primary" onclick="saveData()">Save</button>
-        </div>
+    <!-- History -->
+    <div class="history-title">Weight History</div>
+    <div id="historyList">
+        <div class="empty-msg">No entries yet.</div>
     </div>
 </div>
 
 <script>
-    // State Management
+    // App State
     let state = {
-        goalLbs: 180, // Default goal in lbs
-        entries: [] // Array of { date: Date, lbs: number }
+        currentWeightPounds: 0,
+        goalWeightPounds: 0,
+        history: [] // Array of { date: string, lbs: number }
     };
 
-    // Load from LocalStorage
-    function loadData() {
+    // Load from LocalStorage on startup
+    function init() {
         const saved = localStorage.getItem('weightTrackerData');
         if (saved) {
-            const parsed = JSON.parse(saved);
-            state.goalLbs = parsed.goalLbs;
-            state.entries = parsed.entries.map(e => ({ ...e, date: new Date(e.date) }));
+            state = JSON.parse(saved);
+            render();
         }
     }
 
-    function saveData() {
-        localStorage.setItem('weightTrackerData', JSON.stringify(state));
-        render();
-    }
-
-    // Helper: String to Lbs
-    // Supports "12st 5", "12st", "173", "12.5"
-    function parseToLbs(input) {
-        input = input.toLowerCase().trim();
-        if (!input) return null;
-
-        let totalLbs = 0;
-        const stoneMatch = input.match(/(\d+)\s*st/);
-        const lbMatch = input.match(/(\d+)\s*lb/);
-        const pureNumberMatch = input.match(/^(\d+\.?\d*)$/);
-
-        if (stoneMatch) {
-            totalLbs += parseInt(stoneMatch[1]) * 14;
-        }
+    // CORE LOGIC: Convert "12.10" notation to total pounds
+    function parseStoneNotation(val) {
+        if (val === null || isNaN(val)) return 0;
         
-        if (lbMatch) {
-            totalLbs += parseInt(lbMatch[1]);
-        } else if (pureNumberMatch) {
-            totalLbs += parseFloat(pureNumberMatch[0]);
-        } else {
-            // If there's a stone match but no specific lb match, 
-            // look for the leftover number in the string
-            const remaining = input.split('st')[1]?.trim();
-            if (remaining && !isNaN(parseFloat(remaining))) {
-                totalLbs += parseFloat(remaining);
-            }
-        }
-
-        return totalLbs > 0 ? totalLbs : null;
+        const stones = Math.floor(val);
+        // We get the decimal part and convert it to an integer (e.g., .10 -> 10)
+        // We use round to avoid floating point math errors (0.1 * 100 = 9.9999)
+        const pounds = Math.round((val - stones) * 100);
+        
+        return (stones * 14) + pounds;
     }
 
-    // Helper: Lbs to Pretty String
-    function formatLbs(lbs) {
-        if (!lbs) return "--";
-        const stones = Math.floor(lbs / 14);
-        const lbsLeft = Math.round(lbs % 14);
-        return stones > 0 ? `${stones}st ${lbsLeft}lb` : `${lbsLeft}lb`;
+    // CORE LOGIC: Convert total pounds back to "12.10" notation
+    function formatStoneNotation(totalLbs) {
+        if (totalLbs <= 0) return "--";
+        
+        const stones = Math.floor(totalLbs / 14);
+        const pounds = total_lbs_to_lbs_remainder(totalLbs); 
+        // Logic: 174 lbs -> 174 % 14 = 4. 
+        // To get .04, we divide by 100.
+        const remainder = totalLbs % 14;
+        
+        // Format decimal part to always show two digits (e.g., 5 becomes 05)
+        const poundsStr = remainder.toString().padStart(2, '0');
+        return `${stones}.${poundsStr}`;
+    }
+    
+    // Helper for the formatting logic
+    function total_lbs_to_lbs_remainder(lbs) {
+        return lbs % 14;
     }
 
-    // UI Logic
-    let activeMode = ''; 
+    function handleUpdate() {
+        const weightVal = document.getElementById('weightInput').value;
+        const goalVal = document.getElementById('goalInput').value;
 
-    function openModal(mode) {
-        activeMode = mode;
-        document.getElementById('modalTitle').innerText = mode === 'weight' ? 'Add Weight' : 'Set Goal Weight';
-        document.getElementById('modalInput').value = '';
-        document.getElementById('modalOverlay').style.display = 'flex';
-        document.getElementById('modalInput').focus();
-    }
-
-    function closeModal() {
-        document.getElementById('modalOverlay').style.display = 'none';
-    }
-
-    function saveDataFromModal() {
-        const val = document.getElementById('modalInput').value;
-        const lbs = parseToLbs(val);
-
-        if (lbs === null) {
-            alert("Invalid format. Use '12st 5' or '173'");
+        if (weightVal === "") {
+            alert("Please enter a weight value.");
             return;
         }
 
-        if (activeMode === 'weight') {
-            state.entries.unshift({
-                date: new Date(),
-                lbs: lbs
-            });
-        } else {
-            state.goalLbs = lbs;
-        }
+        // 1. Parse the new weight
+        const newWeightLbs = parseStoneNotation(parseFloat(weightVal));
+        const newGoalLbs = goalVal ? parseStoneNotation(parseFloat(goalVal)) : state.goalWeightPounds;
 
-        saveData();
-        closeModal();
+        // 2. Update State
+        const timestamp = new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+        
+        state.currentWeightPounds = newWeightLbs;
+        state.goalWeightPounds = newGoalLbs;
+        
+        // Add to history
+        state.history.unshift({
+            date: timestamp,
+            lbs: newWeightLbs
+        });
+
+        // 3. Limit history to last 10 entries
+        if (state.history.length > 10) state.history.pop();
+
+        // 4. Save and Render
+        save();
+        render();
+
+        // Clear inputs
+        document.getElementById('weightInput').value = "";
+    }
+
+    function save() {
+        localStorage.setItem('weightTrackerData', JSON.stringify(state));
     }
 
     function render() {
-        const historyList = document.getElementById('historyList');
-        const currWeightDisplay = document.getElementById('currWeightDisplay');
-        const goalWeightDisplay = document.getElementById('goalWeightDisplay');
-        const progressPercent = document.getElementById('progressPercent');
-        const progressBar = document.getElementById('progressBar');
+        // Update Top Stats
+        document.getElementById('displayCurrent').innerText = formatStoneNotation(state.currentWeightPounds);
+        document.getElementById('displayGoal').innerText = formatStoneNotation(state.goalWeightPounds);
 
-        // 1. Render Goal
-        goalWeightDisplay.innerText = formatLbs(state.goalLbs);
-
-        // 2. Render Current (Latest entry)
-        const latest = state.entries[0];
-        const currentLbs = latest ? latest.lbs : null;
-        currWeightDisplay.innerText = formatLbs(currentLms = currentLbs);
-
-        // 3. Render Progress
-        if (currentLbs && state.goalLbs) {
-            // Progress is calculated as how much of the "reduction" we have achieved
-            // Assuming weight loss direction. 
-            // We'll calculate % based on starting point vs goal. 
-            // For simplicity here: % = (Starting - Current) / (Starting - Goal)
-            // Let's use a simpler: progress = 100 * (Goal / Current) if goal < current
-            // But let's assume goal is always lower for a weight loss app.
-            
-            // Let's find the very first entry to act as "Start"
-            const startWeight = state.entries[state.entries.length - 1].lbs;
-            const totalToLose = startWeight - state.goalLbs;
-            const lostSoFar = startWeight - currentLbs;
-            
-            let percent = (lostSoFar / totalToLose) * 100;
-            if (percent > 100) percent = 100;
-            if (percent < 0) percent = 0;
-
-            progressPercent.innerText = Math.round(percent) + '%';
-            progressBar.style.width = percent + '%';
-        } else {
-            progressPercent.innerText = '0%';
-            progressBar.style.width = '0%';
+        // Update History List
+        const listContainer = document.getElementById('historyList');
+        
+        if (state.history.length === 0) {
+            listContainer.innerHTML = '<div class="empty-msg">No entries yet.</div>';
+            return;
         }
 
-        // 4. Render History
-        historyList.innerHTML = '';
-        state.entries.forEach(entry => {
-            const div = document.createElement('div');
-            div.className = 'history-item';
-            const dateStr = entry.date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-            div.innerHTML = `
-                <span class="history-date">${dateStr}</span>
-                <span class="history-weight">${formatLbs(entry.lbs)}</span>
-            `;
-            historyList.appendChild(div);
-        });
+        listContainer.innerHTML = state.history.map(item => `
+            <div class="log-item">
+                <span class="log-date">${item.date}</span>
+                <span class="log-weight">${formatStoneNotation(item.lbs)}</span>
+            </div>
+        `).join('');
     }
 
-    // Initialize
-    window.saveData = saveDataFromModal;
-    loadData();
-    render();
-
+    // Initialize the app
+    init();
 </script>
 
 </body>
