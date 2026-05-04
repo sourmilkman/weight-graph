@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weight Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#09090b">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <header>
+        <h1>TrackWeight</h1>
+        <button id="clear-btn" title="Clear All Data">🗑️</button>
+    </header>
+
+    <main>
+        <section class="stats-grid">
+            <div class="stat-card">
+                <p>Current</p>
+                <h2 id="current-weight">--</h2>
+            </div>
+            <div class="stat-card">
+                <p>Goal</p>
+                <h2 id="goal-weight" class="text-emerald">--</h2>
+            </div>
+        </section>
+
+        <section class="chart-container">
+            <canvas id="weightChart"></canvas>
+        </section>
+
+        <section class="history-section">
+            <h3 class="section-title">Recent Entries</h3>
+            <div id="history-list">
+                <!-- Entries will be injected here -->
+            </div>
+        </section>
+    </main>
+
+    <button id="fab" class="fab">+</button>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h3>Add Weight</h3>
+            <input type="number" id="weight-input" step="0.1" placeholder="0.0" autofocus>
+            <div class="modal-actions">
+                <button id="cancel-btn" class="btn-secondary">Cancel</button>
+                <button id="save-btn" class="btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+</html>
