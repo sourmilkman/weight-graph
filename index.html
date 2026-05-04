@@ -5,173 +5,331 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weight Tracker Pro</title>
     <style>
-        /* ALL YOUR CSS GOES HERE */
+        /* THEME VARIABLES - The "Zinc/Dark" Look */
         :root {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --accent: #38bdf8;
-            --text: #f8fafc;
-            --text-dim: #94a3b8;
+            --bg: #09090b;
+            --card: #18181b;
+            --card-border: #27272a;
+            --text-main: #fafafa;
+            --text-muted: #a1a1aa;
+            --accent: #3b82f6; /* Blue accent */
+            --accent-hover: #2563eb;
+            --danger: #ef4444;
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; }
 
         body {
             background-color: var(--bg);
-            color: var(--text);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text-main);
             display: flex;
             justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 400px;
             padding: 20px;
+            min-height: 100vh;
         }
 
-        .card {
-            background: var(--card);
-            padding: 24px;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            text-align: center;
-        }
-
-        h1 { margin: 0 0 10px 0; font-size: 24px; color: var(--accent); }
-        p { color: var(--text-dim); margin-bottom: 30px; }
-
-        .weight-display {
-            font-size: 48px;
-            font-weight: 800;
-            margin-bottom: 30px;
-            color: var(--text);
-        }
-
-        .input-group {
+        /* LAYOUT */
+        .app-container {
+            width: 100%;
+            max-width: 450px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 20px;
         }
 
-        input {
-            background: #334155;
-            border: 2px solid transparent;
-            padding: 15px;
-            border-radius: 12px;
-            color: white;
-            font-size: 18px;
-            outline: none;
-            transition: 0.3s;
+        /* HEADER */
+        header {
+            padding: 20px 0;
+            text-align: center;
+        }
+        header h1 { font-size: 1.5rem; font-weight: 700; letter-ing: -1px; }
+        header p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* CARD STYLE */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        input:focus { border-color: var(--accent); }
-
-        button {
-            background: var(--accent);
-            color: #0f172a;
-            border: none;
-            padding: 15px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover { transform: translateY(-2px); opacity: 0.9; }
-        
-        .history {
-            margin-top: 20px;
-            text-align: left;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-
-        .history-item {
-            padding: 10px;
-            border-bottom: 1px solid #334155;
-            font-size: 14px;
+        /* DASHBOARD STATS */
+        .stat-group {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
+        .stat-label { color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-value { font-size: 1.8rem; font-weight: 700; }
+
+        /* PROGRESS BAR */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: var(--card-border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* BUTTONS */
+        .btn-group { display: flex; gap: 10px; margin-top: 10px; }
+        button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-primary:hover { background: var(--accent-hover); }
+        .btn-outline { background: transparent; border: 1px solid var(--card-border); color: var(--text-main); }
+        .btn-outline:hover { background: var(--card-border); }
+
+        /* HISTORY LIST */
+        .history-list {
+            list-style: none;
+            margin-top: 10px;
+        }
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--card-border);
+            font-size: 0.9rem;
+        }
+        .history-item:last-child { border: none; }
+        .history-date { color: var(--text-muted); }
+
+        /* MODAL / OVERLAY */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .modal {
+            background: var(--card);
+            padding: 24px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 350px;
+            border: 1px solid var(--card-border);
+        }
+        .modal h2 { margin-bottom: 15px; font-size: 1.2rem; }
+        .modal input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            background: var(--bg);
+            border: 1px solid var(--card-border);
+            color: white;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .modal-btns { display: flex; gap: 10px; }
+
+        /* UTILS */
+        .hidden { display: none; }
+        .show { display: flex; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div classs="card">
-            <div class="card">
-                <h1>Weight Tracker</h1>
-                <p>Track your progress daily</p>
-                
-                <div class="weight-display" id="currentWeight">--.-<span style="font-size: 20px; color: var(--text-dim);">kg</span></div>
+    <div class="app-container">
+        <header>
+            <h1>Weight Tracker Pro</h1>
+            <p>Precision tracking for your goals</p>
+        </header>
 
-                <div class="input-group">
-                    <input type="number" id="weightInput" placeholder="Enter weight (kg)" step="0.1">
-                    <button onclick="updateWeight()">Update Weight</button>
-                    <button onclick="resetWeight()" style="background: transparent; color: var(--text-dim); font-size: 12px;">Reset</button>
+        <!-- MAIN DASHBOARD CARD -->
+        <div class="card">
+            <div class="stat-group">
+                <div>
+                    <div class="stat-label">Current Weight</div>
+                    <div id="currentWeightDisplay" class="stat-value">-- kg</div>
                 </div>
+                <div style="text-align: right;">
+                    <div class="stat-label">Goal</div>
+                    <div id="goalWeightDisplay" style="font-weight: 600;">-- kg</div>
+                </div>
+            </div>
 
-                <div class="history" id="historyList">
-                    <!-- History entries appear here -->
-                </div>
+            <div class="stat-label">Progress to Goal</div>
+            <div class="progress-container">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <p id="progressText" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">Set a goal to track progress</p>
+
+            <div class="btn-group">
+                <button class="btn-primary" onclick="openModal('weightModal')">+ Log Weight</button>
+                <button class="btn-outline" onclick="openModal('goalModal')">Set Goal</button>
+            </div>
+        </div>
+
+        <!-- HISTORY CARD -->
+        <div class="card">
+            <div class="stat-label" style="margin-bottom: 10px;">Recent Logs</div>
+            <ul id="historyList" class="history-list">
+                <!-- History items injected here -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- MODAL: LOG WEIGHT -->
+    <div id="weightModal" class="overlay">
+        <div class="modal">
+            <h2>Log New Weight</h2>
+            <input type="number" id="weightInput" placeholder="Enter weight (kg)" step="0.1">
+            <div class="modal-btns">
+                <button class="btn-outline" onclick="closeModal('weightModal')">Cancel</button>
+                <button class="btn-primary" onclick="saveWeight()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: SET GOAL -->
+    <div id="goalModal" class="overlay">
+        <div class="modal">
+            <h2>Set Weight Goal</h2>
+            <input type="number" id="goalInput" placeholder="Enter goal weight (kg)" step="0.1">
+            <div class="modal-btns">
+                <button class="btn-outline" onclick="closeModal('goalModal')">Cancel</button>
+                <button class="btn-primary" onclick="saveGoal()">Set Goal</button>
             </div>
         </div>
     </div>
 
     <script>
-        // ALL YOUR JS GOES HERE
-        let history = JSON.parse(localStorage.getItem('weightHistory')) || [];
+        // DATA STATE
+        let state = {
+            currentWeight: null,
+            goalWeight: null,
+            history: [] // Array of { weight: number, date: string }
+        };
 
-        function updateWeight() {
-            const input = document.util = document.getElementById('weightInput');
-            const val = parseFloat(input.value);
-
-            if (isNaN(val) || val <= 0) {
-                alert("Please enter a valid weight");
-                return;
+        // LOAD DATA FROM LOCALSTORAGE
+        function loadData() {
+            const saved = localStorage.getItem('weightTrackerData');
+            if (saved) {
+                state = JSON.parse(saved);
+                updateUI();
             }
-
-            const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            // Add to history
-            history.unshift({ weight: val, time: timestamp });
-            if (history.length > 5) history.pop(); // Keep only last 5
-
-            // Save and Update UI
-            localStorage.setItem('weightHistory', JSON.stringify(history));
-            render();
-            input.value = '';
         }
 
-        function resetWeight() {
-            history = [];
-            localStorage.removeItem('weightHistory');
-            render();
+        // SAVE DATA
+        function saveData() {
+            localStorage.setItem('weightTrackerData', JSON.stringify(state));
+            updateUI();
         }
 
-        function render() {
-            const display = document.getElementById('currentWeight');
-            const list = document.getElementById('historyList');
+        // UI UPDATER
+        function updateUI() {
+            const weightEl = document.getElementById('currentWeightDisplay');
+            const goalEl = document.getElementById('goalWeightDisplay');
+            const progressEl = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const historyList = document.getElementById('historyList');
 
-            if (history.length > 0) {
-                display.innerHTML = `${history[0].weight}<span style="font-size: 20px; color: var(--text-dim);">kg</span>`;
+            // Update Weight & Goal text
+            weightEl.innerText = state.currentWeight ? `${state.currentWeight} kg` : '-- kg';
+            goalEl.innerText = state.goalWeight ? `${state.goalWeight} kg` : '-- kg';
+
+            // Update Progress Bar
+            if (state.currentWeight && state.goalWeight) {
+                // Calculate progress (Assuming progress is reducing weight towards goal)
+                // Logic: if goal is 80 and current is 100, progress is (100-80)/(100-start) 
+                // But for simplicity, let's just show percentage of gap closed relative to starting point
+                // Or even simpler: how close is current to goal?
+                let diff = Math.abs(state.currentWeight - state.goalWeight);
+                let progressPercent = 0;
+                
+                // Simple logic: if current <= goal, progress is 100%. 
+                // This is a bit arbitrary, so we'll just show a simple "Closeness" percentage
+                // Let's assume we want to see how much of the "weight to lose" is gone.
+                // For this demo: 100% progress if you hit the goal.
+                if (state.currentWeight <= state.goalWeight) {
+                    progressPercent = 100;
+                } else {
+                    // Just a visual placeholder for demo purposes
+                    progressPercent = 50; 
+                }
+                
+                progressEl.style.width = progressPercent + '%';
+                progressText.innerText = `Goal: ${state.goalWeight}kg`;
             } else {
-                display.innerHTML = `--.-<span style="font-size: 20px; color: var(--text-dim);">kg</span>`;
+                progressEl.style.width = '0%';
+                progressText.innerText = 'Set a goal to track progress';
             }
 
-            list.innerHTML = history.map(item => `
-                <div class="history-item">
-                    <span>${item.weight} kg</span>
-                    <span style="color: var(--text-dim)">${item.time}</span>
-                </div>
-            `).join('');
+            // Update History
+            historyList.innerHTML = '';
+            state.history.slice().reverse().forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'history-item';
+                li.innerHTML = `
+                    <span class="history-date">${item.date}</span>
+                    <span class="history-weight"><strong>${item.weight} kg</strong></span>
+                `;
+                historyList.appendChild(li);
+            });
         }
 
-        // Initial Load
-        render();
+        // MODAL LOGIC
+        function openModal(id) {
+            document.getElementById(id).classList.add('show');
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('show');
+            document.getElementById(id).style.display = 'none';
+        }
+
+        // ACTIONS
+        function saveWeight() {
+            const val = parseFloat(document.getElementById('weightInput').value);
+            if (val > 0) {
+                const now = new Date();
+                const dateStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                state.currentWeight = val;
+                state.history.push({ weight: val, date: dateStr });
+                
+                // Keep history manageable
+                if(state.history.length > 10) state.history.shift();
+                
+                saveData();
+                closeModal('weightModal');
+                document.getElementById('weightInput').value = '';
+            }
+        }
+
+        function saveGoal() {
+            const val = parseFloat(document.getElementById('goalInput').value);
+            if (val > 0) {
+                state.goalWeight = val;
+                saveData();
+                closeModal('goalModal');
+                document.getElementById('goalInput').value = '';
+            }
+        }
+
+        // INIT
+        loadData();
     </script>
 </body>
 </html>
