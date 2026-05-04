@@ -3,55 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weight Tracker</title>
+    <title>Weight Tracker Pro</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="header">
-        <div class="header-actions">
-            <!-- New Button for setting Goal -->
-            <button id="set-goal-btn" class="icon-btn" title="Set Goal">🎯</button>
-            <button id="add-weight-btn" class="icon-btn" title="Add Weight">➕</button>
-        </div>
-        <div class="header-title">Weight Tracker</div>
-    </div>
 
-    <div class="main-container">
-        <div class="stats-card">
-            <div class="stat-item">
-                <span class="stat-label">Current</span>
-                <span id="current-weight-display" class="stat-value">--</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Goal</span>
-                <span id="goal-weight-display" class="stat-value">--</span>
-            </div>
-        </div>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="app-header">
+            <div class="status-dot"></div>
+            <h1>Weight Tracker</h1>
+            <p class="date-display" id="current-date"></p>
+        </header>
 
-        <div class="chart-container">
-            <canvas id="weightChart"></canvas>
-        </div>
+        <!-- Main Dashboard -->
+        <main class="dashboard">
+            
+            <!-- Summary Card -->
+            <section class="card summary-card">
+                <p class="card-label">Current Weight</p>
+                <h2 class="main-weight" id="display-current">--.- <span class="unit">kg</span></h2>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+                </div>
+                <p class="card-subtext" id="display-goal-status">Set a goal to track progress</p>
+            </action>
+            </section>
 
-        <div class="history-section">
-            <h3>History</h3>
-            <ul id="history-list"></ul>
-        </div>
+            <!-- Quick Actions -->
+            <section class="actions-grid">
+                <button class="action-btn primary" onclick="openModal('log')">
+                    <span class="icon">⊕</span>
+                    <span>Log Weight</span>
+                </button>
+                <button class="action-btn secondary" onclick="openModal('goal')">
+                    <span class="icon">🎯</span>
+                    <span>Set Goal</span>
+                </button>
+            </section>
+
+            <!-- History Card -->
+            <section class="card history-card">
+                <div class="card-header">
+                    <h3>Recent Logs</h3>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+                <ul class="history-list" id="history-list">
+                    <!-- Items injected by JS -->
+                    <li class="empty-state">No entries recorded yet.</li>
+                </ul>
+            </section>
+        </main>
     </div>
 
     <!-- Modal for Input -->
-    <div id="modal-overlay" class="modal-overlay">
+    <div class="modal-overlay" id="modal-overlay">
         <div class="modal">
-            <h2 id="modal-title">Add Weight</h2>
-            <p id="modal-desc">Enter your current weight.</p>
-            <input type="number" id="modal-input" step="0.1" placeholder="0.0">
+            <h2 id="modal-title">Log Weight</h2>
+            <p id="modal-desc">Enter your weight in kilograms.</p>
+            <input type="number" id="weight-input" placeholder="0.0" step="0.1">
             <div class="modal-actions">
-                <button id="modal-cancel" class="btn-secondary">Cancel</button>
-                <button id="modal-save" class="btn-primary">Save</button>
+                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn-save" id="save-btn" onclick="handleSave()">Save Entry</button>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
